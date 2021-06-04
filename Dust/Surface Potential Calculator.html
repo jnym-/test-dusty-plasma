@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Surface Potential Calculator - Charging Models - Imperial Visualisations</title>
+    <link rel="icon" href="https://www.imperial.ac.uk/T4Assets/favicon-196x196.png" type="image/x-icon">
+        <link rel="stylesheet" href="https://rawgit.com/Imperial-visualizations/Physics-Visualizations/master/css/skeleton.css">
+    <link rel="stylesheet" href="https://rawgit.com/Imperial-visualizations/Physics-Visualizations/master/css/style.css">
+
+    <script src="scripts/plotly-1.47.4.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="scripts/numeric/src/numeric.js"></script>
+    <script src="https://unpkg.com/mathjs@6.0.2/dist/math.min.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            extensions: ["tex2jax.js"],
+            jax: ["input/TeX", "output/HTML-CSS"],
+            tex2jax: {
+            inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+            displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+            processEscapes: true
+            },
+            "HTML-CSS": { fonts: ["TeX"] }
+        });
+        </script>
+    <script type="text/javascript" src="scripts/MathJax-master/MathJax.js"></script>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+
+</head>
+
+<body>
+<div class="container">
+    <div class="row">
+        <h1>Normalized Surface Potential Calculator</h1>
+        <br>
+        <!--Input Box & Sliders-->
+        <div class="Twelve columns">
+            <div class="tab-content">
+                <div id="scroll">
+                    <div class="scroll_down">
+                        <strong>Select Function: </strong>
+                        <select id="Select">
+                            <option value="ABR">ABR</option>
+                            <option value="OML">OML</option>
+                            <option value="MOML">MOML</option>
+                            <option value="SOML">SOML</option>
+                            <option value="SMOML">SMOML</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!--Slider-->
+                <div class="allSliders">
+
+                        <!--NB: Be careful with classes and types-->
+                        <!--BEGIN Slider J-->
+                        <p></p>
+                        <div id="J">
+                            <!--Slider Display J-->
+                            <label class="sliderTitle" style="padding-bottom:20px;">J Power:&nbsp;
+                                <input id="JControllerDisplay" value="1" data-unit=""/>&nbsp;
+                            </label>
+                            <!--Slider J-->
+                            <label class="slider">
+                                <span class="sliderMin">-6</span>
+                                <input id="JController" class="inputs" type="range" value="1" min="-6" max="6"
+                                    step="1"/>
+                                <span class="sliderMax">6</span></label>
+                        </div>
+                        <!--END Slider J-->
+
+                        <!--BEGIN Slider Eps-->
+                        <p></p>
+                        <div id="Eps">
+                            <!--Slider Display Eps-->
+                            <label class="sliderTitle" style="padding-bottom:20px;">Epsilon Power:&nbsp;
+                                <input id="EpsControllerDisplay" value="-10" data-unit=""/>&nbsp;
+                            </label>
+                            <!--Slider Eps-->
+                            <label class="slider">
+                                <span class="sliderMin">-14</span>
+                                <input id="EpsController" class="inputs" type="range" value="-10" min="-14" max="-6"
+                                    step="1"/>
+                                <span class="sliderMax">-6</span></label>
+                        </div>
+                        <!--END Slider eps-->
+        
+                        <!--BEGIN Slider Beta-->
+                        <div id="Beta">
+                            <!--Slider Display Beta-->
+                            <label class="sliderTitle" style="padding-bottom:20px;">Beta Power:&nbsp;
+                                <input id="BetaControllerDisplay" value="0" data-unit=""/>&nbsp;
+                            </label>
+                            <!--Slider Beta-->
+                            <label class="slider">
+                                <span class="sliderMin">-6</span>
+                                <input id="BetaController" class="inputs" type="range" value="0" min="-6" max="2" step="0.1"/>
+                                <span class="sliderMax">2</span>
+                            </label>
+                        </div>
+                        <!--END Slider Beta-->
+
+                        <!--BEGIN Slider Mu-->
+                        <div id="Mu">
+                                <!--Slider Display Mu-->
+                                <label class="sliderTitle" style="padding-bottom:20px;">Mu multiple:&nbsp;
+                                    <input id="MuControllerDisplay" value="1" data-unit=""/>&nbsp;
+                                </label>
+                                <!--Slider Mu-->
+                                <label class="slider">
+                                    <span class="sliderMin">0.1</span>
+                                    <input id="MuController" class="inputs" type="range" value="1" min="0.1" max="10" step="0.1"/>
+                                    <span class="sliderMax">10</span>
+                                </label>
+                            </div>
+                            <!--END Slider Mu-->
+
+                        <!--BEGIN Slider Z-->
+                        <div id="Z">
+                            <!--Slider Display Z-->
+                            <label class="sliderTitle" style="padding-bottom:20px;">Z:&nbsp;
+                                <input id="ZControllerDisplay" value="1" data-unit=""/>&nbsp;
+                            </label>
+                            <!--Slider Z-->
+                            <label class="slider">
+                                <span class="sliderMin">1</span>
+                                <input id="ZController" class="inputs" type="range" value="1" min="1" max="20" step="1"/>
+                                <span class="sliderMax">20</span>
+                            </label>
+                        </div>
+                        <!--END Slider Z-->
+
+                        <!--BEGIN Slider Root-->
+                        <p></p>
+                        <div id="Root">
+                            <!--Slider Display Root-->
+                            <label class="sliderTitle" style="padding-bottom:20px;">Root Precision Power:&nbsp;
+                                <input id="RootControllerDisplay" value="-12" data-unit=""/>&nbsp;
+                            </label>
+                            <!--Slider Root-->
+                            <label class="slider">
+                                <span class="sliderMin">-15</span>
+                                <input id="RootController" class="inputs" type="range" value="-12" min="-15" max="-6"
+                                    step="1"/>
+                                <span class="sliderMax">-6</span></label>
+                        </div>
+                        <!--END Slider Root-->
+
+                        <!--BEGIN Slider Gamma-->
+                        <div id="Gamma">
+                            <!--Slider Display Gamma-->
+                            <label class="sliderTitle" style="padding-bottom:20px;">Gamma:&nbsp;
+                                <input id="GammaControllerDisplay" value="1" data-unit=""/>&nbsp;
+                            </label>
+                            <!--Slider Gamma-->
+                            <label class="slider">
+                                <span class="sliderMin">0</span>
+                                <input id="GammaController" class="inputs" type="range" value="1" min="0" max="10" step="0.1"/>
+                                <span class="sliderMax">10</span>
+                            </label>
+                        </div>
+                        <!--END Slider Gamma-->
+
+                        <!--BEGIN Slider U-->
+                        <div id="U">
+                            <!--Slider Display U-->
+                            <label class="sliderTitle" style="padding-bottom:20px;">U:&nbsp;
+                                <input id="UControllerDisplay" value="1" data-unit=""/>&nbsp;
+                            </label>
+                            <!--Slider U-->
+                            <label class="slider">
+                                <span class="sliderMin">0</span>
+                                <input id="UController" class="inputs" type="range" value="1" min="0" max="10" step="0.1"/>
+                                <span class="sliderMax">10</span>
+                            </label>
+                        </div>
+                        <!--END Slider U-->
+                    </div>
+
+                    <input type="button" id="CalcButton" value="Calculate">
+                    <div class = "cabinet red">
+                            Normalized Surface Potential: <span id = "Norm_surd_pot-display"></span>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="scripts/Surface Potential Calculator.js"></script>
+</body>
+</html>
